@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Weather App</title>
+  </head>
+  <body>
+    <form id="weather-form">
+      <label for="location">Enter a location:</label><br>
+      <input type="text" id="location" name="location"><br>
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-data"></div>
+    <script>
+      const apiKey = "YOUR_API_KEY_HERE";
+      const weatherForm = document.getElementById("weather-form");
+      const weatherData = document.getElementById("weather-data");
+
+      weatherForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const location = document.getElementById("location").value;
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            const temperature = data["main"]["temp"];
+            const humidity = data["main"]["humidity"];
+            weatherData.innerHTML = `
+              <p>Current temperature in ${location}: ${temperature}°F</p>
+              <p>Current humidity in ${location}: ${humidity}%</p>
+            `;
+          })
+          .catch((error) => {
+            weatherData.innerHTML = "<p>Failed to retrieve weather data</p>";
+          });
+      });
+    </script>
+  </body>
+</html>
