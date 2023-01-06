@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>Weather App</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      #weather-form {
+        margin: 20px 0;
+      }
+
+      #location {
+        width: 300px;
+        height: 30px;
+        font-size: 18px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 0 10px;
+      }
+
+      button[type="submit"] {
+        width: 100px;
+        height: 36px;
+        font-size: 18px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      #weather-data {
+        margin: 20px 0;
+      }
+
+      #weather-data p {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Weather App</h1>
+    <form id="weather-form">
+      <label for="location">Enter a location:</label><br>
+      <input type
+            <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-data"></div>
+    <script>
+      const apiKey = "27ef79d07593ed6bba614c656bba8f42";
+      const weatherForm = document.getElementById("weather-form");
+      const weatherData = document.getElementById("weather-data");
+
+      weatherForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const location = document.getElementById("location").value;
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            const temperatureKelvin = data["main"]["temp"];
+            const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
+            const humidity = data["main"]["humidity"];
+            weatherData.innerHTML = `
+              <p>Current temperature in ${location}: ${temperatureFahrenheit}°F</p>
+              <p>Current humidity in ${location}: ${humidity}%</p>
+            `;
+          })
+          .catch((error) => {
+            weatherData.innerHTML = "<p>Failed to retrieve weather data</p>";
+          });
+      });
+    </script>
+  </body>
+</html>
