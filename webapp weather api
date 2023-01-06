@@ -22,10 +22,11 @@
         fetch(apiUrl)
           .then((response) => response.json())
           .then((data) => {
-            const temperature = data["main"]["temp"];
+            const temperatureKelvin = data["main"]["temp"];
+            const temperatureFahrenheit = (temperatureKelvin - 273.15) * 9/5 + 32;
             const humidity = data["main"]["humidity"];
             weatherData.innerHTML = `
-              <p>Current temperature in ${location}: ${temperature}°F</p>
+              <p>Current temperature in ${location}: ${temperatureFahrenheit}°F</p>
               <p>Current humidity in ${location}: ${humidity}%</p>
             `;
           })
